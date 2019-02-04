@@ -4,10 +4,9 @@ $firstname = $_GET["firstname"];
 $lastname = $_GET["lastname"];
 $address = $_GET["address"];
 $contactNo = $_GET["contactNo"];
-echo "Your personal details:"
-echo "<br><br>";
-echo "Firstname: $firstname";
-echo "Lastname: $lastname";
-echo "Address: $address";
-echo "Contact No: $contactNo";
+echo "<h2>Your personal details:</h2>";
+echo "Firstname: $firstname<br>";
+echo "Lastname: $lastname<br>";
+echo "Address: $address<br>";
+echo "Contact No: $contactNo<br>";
 ?>

@@ -2,8 +2,8 @@
 <html>
 <body>
 
-<h4>Enter your employee Details:</h4>
-<form action="/employeeDetail.php" method="POST">
+<h2>Enter your Employee Details:</h2>
+<form action="http://localhost:81/Exercise01/employeeDetail.php" method="POST">
   <table>
     <tr>
       <td>Employee Id</td>
@@ -25,10 +25,12 @@
       <td>Email</td>
       <td><input type="text" name="email"></td>
     </tr>
+    <tr>
+      <td><input type="hidden" name="age" value="18"></td>
+    </tr>
   </table>
+  <br>
+  <input type="submit" value="Submit">
 </form> 
-
-<p>If you click the "Submit" button, the form-data will be sent to a page called "/employeeDetail.php".</p>
-
 </body>
 </html>

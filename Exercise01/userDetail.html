@@ -1,26 +1,22 @@
 <!DOCTYPE html>
 <html>
+
 <body>
-
-<h2>Enter user's details</h2>
-
-<form action="/userDetail.php" method="GET">
-  First name:<br>
-  <input type="text" name="firstname">
-  <br>
-  Last name:<br>
-  <input type="text" name="lastname">
-  <br>
-  Address:<br>
-  <textarea name="address" cols="1000" rows="1"></textarea>
-  <br>
-  Contach No:<br>
-  <input type="text" name="contactNo">
-  <br><br>
-  <input type="submit" value="Submit">
-</form> 
-
-<p>If you click the "Submit" button, the form-data will be sent to a page called "/userDetail.php".</p>
-
+    <h2>Enter user's details</h2>
+    <form action="http://localhost:81/Exercise01/userDetail.php" method="GET">
+        First name:<br>
+        <input type="text" name="firstname">
+        <br>
+        Last name:<br>
+        <input type="text" name="lastname">
+        <br>
+        Address:<br>
+        <textarea name="address" cols="30" rows="5"></textarea>
+        <br>
+        Contach No:<br>
+        <input type="text" name="contactNo">
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
 </body>
 </html>
