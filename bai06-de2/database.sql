@@ -9,4 +9,6 @@ CREATE TABLE abc12users(
 USE abc12;
 INSERT INTO abc12users(UserName, PasswordHash, Phone)
 VALUES('hoang12','amnehfudhierhei2222', '024-55547789');
-SELECT * FROM abc12users WHERE UserName=
+--SELECT * FROM abc12users WHERE UserName=
+USE abc12;
+DELETE FROM abc12users WHERE 1=1;

@@ -1,3 +1,4 @@
+<!-- http://localhost:80/bai06-de2/register_user.php -->
 <?php 
 include('database/database.php');
  ?>
@@ -45,14 +46,10 @@ if(isset($_POST["submit"])) {
 		echo "User exists";
 	} else {
 		//Encrypt password to HEX
-		$password = sha1("123");
-		$password2 = sha1("123");
-		print_r($password);
-		echo "<br>";
-		print_r($password2);
+		$password_hash = sha1($password);
 		//Register user
 		$sql = "INSERT INTO abc12users(UserName, PasswordHash, Phone)".
-			"VALUES('".$username."','".$password."','".$phone_number."')";
+			"VALUES('".$username."','".$password_hash."','".$phone_number."')";
 		$result = mysqli_query($connection, $sql);
 		if($result) {
 			echo "<h3>Register successfully</h3>";
