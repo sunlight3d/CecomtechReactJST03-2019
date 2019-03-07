@@ -1,0 +1,22 @@
+Microsoft Windows [Version 10.0.17763.316]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+D:\code\AptechPHP>Eg: git clone https://github.com/sunlight3d/testphp.git
+
+D:\code\AptechPHP>3.choose .gitignore => contains ignored files(not push to git)
+
+D:\code\AptechPHP>Open: https://www.gitignore.io, fill language, eg: php, java,...
+
+D:\code\AptechPHP>Create => copy content, save to .gitignore in your code folder
+
+D:\code\AptechPHP>4. Get latest code:
+
+D:\code\AptechPHP>cd yourCodeFolder
+
+D:\code\AptechPHP>git pull origin master
+
+D:\code\AptechPHP>5. Add and commit your code to git(save to local):
+
+D:\code\AptechPHP>git add .
+
+D:\code\AptechPHP>git commit -am "Do something, commit 1"
