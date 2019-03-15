@@ -16,7 +16,7 @@ const doSomething = () => {
     if(1) {
         let x = 11
     }
-    alert(`x = ${x}`)
+    // alert(`x = ${x}`)
     let name="Hoang"
     let email = "hoang@gmail.com"
     // alert(`Name = ${name}, email = ${email}`)    
@@ -41,7 +41,7 @@ function multiply(x, y) {
 }
 //local storage
 const testLocalStorage = () => {
-    // localStorage.setItem('name', 'Hoang')
+    //localStorage.setItem('name', 'Hoang')
     alert(`Name = ${localStorage.getItem('name')}`)
 }
 //Promise function 

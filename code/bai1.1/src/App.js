@@ -8,7 +8,7 @@ class App extends Component {
         super(props)
     }
     render() {
-        doSomething()
+        //doSomething()
         /*
         doPromiseA(1,2).then((result) =>{
             alert(`result = ${result}`)
@@ -16,7 +16,7 @@ class App extends Component {
             alert(`Error = ${err}`)
         })
         */
-        // testLocalStorage()
+        testLocalStorage()
         // multiply(3,10)
         return <div>
             <h1>Hello world</h1>
