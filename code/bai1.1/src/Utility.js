@@ -28,7 +28,11 @@ const doSomething = () => {
     // let {name, email} = person
     //alert(`Name = ${name}, email = ${email}`)    
     //Delete an object
-    // delete person
+    var products = [{name: "iphone X",year: 2018}, {name: "iphone 6", year:2016}];
+    products.forEach((product, index) => {
+        console.log(`product = ${JSON.stringify(product)}, index = ${index}`)
+    });    
+    
 
 }
 function multiply(x, y) {

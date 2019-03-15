@@ -8,12 +8,14 @@ class App extends Component {
         super(props)
     }
     render() {
-        //doSomething()
+        doSomething()
+        /*
         doPromiseA(1,2).then((result) =>{
             alert(`result = ${result}`)
         }).catch((err) => {
             alert(`Error = ${err}`)
         })
+        */
         // testLocalStorage()
         // multiply(3,10)
         return <div>
