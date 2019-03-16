@@ -1,14 +1,14 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import './App.css'
-import {doSomething, multiply, testLocalStorage, doPromiseA} from './Utility'
+import {doSomething, multiply, testLocalStorage, doPromiseA, doAsyncAwait} from './Utility'
 
 class App extends Component {
     constructor(props) {
         super(props)
     }
     render() {
-        //doSomething()
+        doSomething()
         /*
         doPromiseA(1,2).then((result) =>{
             alert(`result = ${result}`)
@@ -16,7 +16,8 @@ class App extends Component {
             alert(`Error = ${err}`)
         })
         */
-        testLocalStorage()
+        //testLocalStorage()
+        //doAsyncAwait()
         // multiply(3,10)
         return <div>
             <h1>Hello world</h1>

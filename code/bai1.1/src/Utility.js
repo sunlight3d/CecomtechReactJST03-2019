@@ -33,7 +33,42 @@ const doSomething = () => {
         console.log(`product = ${JSON.stringify(product)}, index = ${index}`)
     });    
     
-
+    var products2 = products.concat({name:'iphone 5', year: 2015})
+    console.log(`products2 = ${JSON.stringify(products2)}`)
+    //Update an item 
+    //products[1].name = "iphone XX"
+    var products3 = products.map((product, index) => {
+        if(product.name === "iphone 6") {
+            //Mutable
+            //product.year = 2020
+            //Unmutable
+            return {
+                ...product,
+                year: 2021
+            }
+        }
+        return product
+    })
+    //Delete an item 
+    products = products.filter(product => {
+        return product.name !== "iphone 6"
+    })
+    //Find an element
+    let foundProduct = products.find((product) => {
+        return product.year === 2018
+    })
+    console.log(`products = ${JSON.stringify(products)}`)
+    console.log(`foundIndex = ${JSON.stringify(foundProduct)}`)
+    //Convert array to string 
+    var strings = ["name='Hoang'", "age=30"]
+    var outputString = strings.join(", ")
+    console.log(`outputString = ${outputString}`)
+    //Sort an array
+    var users = [{name: 'John', age: 22}, {name: "Hoang", age: 30}, {name: 'Thanh', age: 21}, {name: "Minh", age: 33}]
+    users.sort((user1, user2) => {
+        return user1.age - user2.age
+    })
+    console.log(`users = ${JSON.stringify(users)}`) 
 }
 function multiply(x, y) {
     alert(`x . y = ${x * y}`)        
@@ -54,9 +89,19 @@ const doPromiseA = (param1, param2) => {
         }
     })
 }
+//funtion with async/await:
+const doAsyncAwait = async () => {
+    try {
+        await doPromiseA(1,2)
+        console.log('do promise successfully')
+    } catch(e) {
+        console.log(`Error = ${e}`)
+    }
+}
 export {
     doSomething,
     multiply,
     testLocalStorage,
-    doPromiseA
+    doPromiseA,
+    doAsyncAwait
 }
