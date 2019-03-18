@@ -8,7 +8,7 @@ class App extends Component {
     this.state = {products: []}
   }
   componentDidMount() {
-    this.ref.myForm.focus()
+    this.refs.myForm.focus()
   }
   submitForm = (event) => {
     event.preventDefault()
@@ -19,25 +19,32 @@ class App extends Component {
     let products = this.state.products
     products.push(newProduct)
     this.setState({products})
-    this.ref.myForm.reset()
-    this.ref.myForm.focus()    
+    this.refs.myForm.reset()
+    this.refs.myForm.focus()    
   }
-  handleDelete = (productName) => {
-    const updatedProducts = this.state.products.filter(product => {
-      return product.productName !== productName
-    })
+  handleDelete = (index) => {
+    let products = this.state.products
+    products.slice(index, 1)    
     this.setState({
       products: updatedProducts
     })
   }
-  mapProductsToListItem = (products) => {
-    products.map((product, index) => {
+  handleEdit = (index) => {
+    let selectedProduct = this.state.products[index]
+    this.refs.productName = selectedProduct.productName
+    this.refs.year = selectedProduct.year
+    this.refs.description = selectedProduct.description    
+    this.setState({
+      products: updatedProducts
+    })
+  }
+  mapProductsToListItem = (products = []) => {    
+    return products.map((product, index) => 
       <li key={index} className="myList">
         {index+1}.{product.productName}, {product.year}, {product.description}
-        <button onClick={this.handleDelete} className="myButton">Delete</button>
-        <button onClick={this.handleEdit} className="myButton">Edit</button>
-      </li>
-    })
+        <button onClick={()=>this.handleDelete(product.productName)} className="myButton">Delete</button>
+        <button onClick={()=>this.handleEdit(product.productName)} className="myButton">Edit</button>
+      </li>)
   }
   render() {
     return (
@@ -50,7 +57,7 @@ class App extends Component {
           <button onClick={this.submitForm}>Submit</button>
         </form>
         <pre>
-
+          {this.mapProductsToListItem(this.state.products)}
         </pre>
       </div>
     );
