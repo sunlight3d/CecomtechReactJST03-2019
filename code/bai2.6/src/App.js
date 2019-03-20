@@ -65,8 +65,8 @@ class App extends Component {
     return products.map((product, index) => 
       <li key={index} className="myList">
         {index+1}.{product.productName}, {product.year}, {product.description}
-        <button onClick={(event)=>this.handleDelete(index)} className="myButton">Delete</button>
-        <button onClick={()=>this.handleEdit(index)} className="myButton">Edit</button>
+        <button onClick={(event)=>this.handleDelete(index)} className="myListButton">Delete</button>
+        <button onClick={()=>this.handleEdit(index)} className="myListButton">Edit</button>
       </li>)
   }
   render() {
@@ -77,7 +77,7 @@ class App extends Component {
           <input type="text" placeholder="Enter product's name" className="formField" ref="productName"/>
           <input type="number" placeholder="Year" className="formField" ref="year"/>
           <input type="text" placeholder="Description" className="formField" ref="description"/>
-          <button onClick={this.submitForm}>{this.state.type==="insert" ? "Add":"Save"}</button>
+          <button onClick={this.submitForm} className="myButton">{this.state.type==="insert" ? "Add":"Save"}</button>
         </form>
         <pre>
           {this.mapProductsToListItem(this.state.products)}

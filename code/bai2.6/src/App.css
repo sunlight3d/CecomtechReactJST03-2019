@@ -4,7 +4,7 @@
 }
 .myForm {
   width: 100%;
-  background-color: aquamarine;
+  background-color:bisque;
   border-radius: 5px;
   padding: 20px;
 }
@@ -16,4 +16,24 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   box-sizing: border-box;
+}
+.myButton {
+  width: 100%;
+  background-color: aqua;
+  color: black;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border:none;
+  border-radius: 4px;
+}
+.myList{
+  list-style: none;  
+}
+.myListButton {
+  display: inline;
+  height: auto;
+  width: auto;
+  border-radius: 7px;
+  border: 1px solid aqua;
+  margin: 3px 5px;    
 }
