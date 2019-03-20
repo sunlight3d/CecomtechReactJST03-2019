@@ -5,56 +5,79 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {products: []}
+    this.state = {products: [], type: "insert"}
+    this.selectedIndex = -1
   }
   componentDidMount() {
     this.refs.myForm.focus()
   }
   submitForm = (event) => {
-    event.preventDefault()
-    let productName = this.refs.productName.value
-    let year = this.refs.year.value
-    let description = this.refs.description.value
-    let newProduct = {productName, year, description}
+    event.preventDefault()    
     let products = this.state.products
-    products.push(newProduct)
-    this.setState({products})
+    if (this.state.type === "insert") {
+      let productName = this.refs.productName.value
+      let year = this.refs.year.value
+      let description = this.refs.description.value
+      let newProduct = { productName, year, description }
+      let updatedProducts = products.concat(newProduct)
+      this.setState({ products: updatedProducts })      
+    } else if(this.state.type ==="update") {
+      const selectedIndex = this.selectedIndex
+      let updatedProducts = products.map((product, index) => {
+        if (index === selectedIndex) {
+          return {
+            ...product,
+            productName: this.refs.productName.value,
+            year: this.refs.year.value,
+            description: this.refs.description.value
+          }
+        }
+        return product
+      })
+      this.setState({
+        products: updatedProducts,
+        type: "insert"
+      })   
+    }
     this.refs.myForm.reset()
-    this.refs.myForm.focus()    
+    this.refs.myForm.focus()
   }
   handleDelete = (index) => {
     let products = this.state.products
-    products.slice(index, 1)    
+    let updatedProducts = products.filter((product, i) => {
+      return i !== index
+    })   
     this.setState({
       products: updatedProducts
     })
   }
   handleEdit = (index) => {
     let selectedProduct = this.state.products[index]
-    this.refs.productName = selectedProduct.productName
-    this.refs.year = selectedProduct.year
-    this.refs.description = selectedProduct.description    
+    this.refs.productName.value = selectedProduct.productName
+    this.refs.year.value = selectedProduct.year
+    this.refs.description.value = selectedProduct.description    
     this.setState({
-      products: updatedProducts
+      type: "update"
     })
+    this.selectedIndex = index
   }
   mapProductsToListItem = (products = []) => {    
     return products.map((product, index) => 
       <li key={index} className="myList">
         {index+1}.{product.productName}, {product.year}, {product.description}
-        <button onClick={()=>this.handleDelete(product.productName)} className="myButton">Delete</button>
-        <button onClick={()=>this.handleEdit(product.productName)} className="myButton">Edit</button>
+        <button onClick={(event)=>this.handleDelete(index)} className="myButton">Delete</button>
+        <button onClick={()=>this.handleEdit(index)} className="myButton">Edit</button>
       </li>)
   }
   render() {
     return (
       <div className="App">
         <h2>Simple CRUD without Database</h2>
-        <form ref="myForm" className="myform">
+        <form ref="myForm" className="myForm">
           <input type="text" placeholder="Enter product's name" className="formField" ref="productName"/>
           <input type="number" placeholder="Year" className="formField" ref="year"/>
           <input type="text" placeholder="Description" className="formField" ref="description"/>
-          <button onClick={this.submitForm}>Submit</button>
+          <button onClick={this.submitForm}>{this.state.type==="insert" ? "Add":"Save"}</button>
         </form>
         <pre>
           {this.mapProductsToListItem(this.state.products)}
