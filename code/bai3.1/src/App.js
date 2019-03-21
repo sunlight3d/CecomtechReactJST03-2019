@@ -16,7 +16,6 @@ import './App.css';
 /**
  * npm install react-router
  * npm install react-router-dom
- * npm install bootstrap
  * 
  */
 class App extends Component {
@@ -26,7 +25,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Root} />
           <Route path="/home" component={Home} />
-          <Route path="/user" component={User} />
+          <Route path="/user/:id" component={User} />
           <Route component={NotFound} />
         </Switch>
       </Router>
