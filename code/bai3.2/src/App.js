@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Login from './components/Login'
+import Register from './components/Register'
 import PostsList from './components/PostsList'
 import DetailPost from './components/DetailPost'
 
@@ -19,6 +20,7 @@ class App extends Component {
           <Route exact path="/" component={PostsList}/>
           <Route path="/detailPost/:id" component={DetailPost}/>
           <Route path="/login" component={Login} />
+          <Route path="/register" component={Register}/>
         </Switch>
       </Router>
     </div>

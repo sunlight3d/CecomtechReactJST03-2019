@@ -12,8 +12,8 @@ const config =  {
     storageBucket: "reacttutorials-43010.appspot.com",
     messagingSenderId: "835387535542"
 };
-
-export default class Firebase {
+const FirebaseContext = React.createContext() 
+class Firebase {
     constructor() {
         app.initializeApp(config)
         this.auth = app.auth()
@@ -31,6 +31,14 @@ export default class Firebase {
     sendPasswordResetEmail = (email) => {
         this.auth.sendPasswordResetEmail(email)
     }
-    
+}
+//Higher order component - HOC
+const withFirebase = Component => (props) => (<FirebaseContext.Consumer>
+    {firebase => <Component {...props} firebase={firebase}/>}
+</FirebaseContext.Consumer>)
 
+export {
+    Firebase,
+    FirebaseContext,
+    withFirebase
 }

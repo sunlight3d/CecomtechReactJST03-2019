@@ -3,8 +3,6 @@ import './Login.css'
 import 'foundation-sites/dist/css/foundation.min.css'
 import Foundation,{Icon, MenuIcon, MenuItem, Link, Button, Colors, Sizes} from 'react-foundation'
 
-import {FirebaseContext} from '../Firebase/Firebase'
-
 export default class Login extends Component {
     constructor(props) {
         super(props)
