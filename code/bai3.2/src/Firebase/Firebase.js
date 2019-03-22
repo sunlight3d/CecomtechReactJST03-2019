@@ -17,19 +17,40 @@ class Firebase {
     constructor() {
         app.initializeApp(config)
         this.auth = app.auth()
+        this.db = app.database()
+        this.storage = app.storage()
     }
-    //Functions for login/register
-    createUserWithEmailAndPassword = (email, password) => {
-        this.auth.createUserWithEmailAndPassword(email, password)        
-    } 
-    signInWithEmailAndPassword = (email, password) => {
-        this.auth.signInWithEmailAndPassword(email, password)
+    
+    getUserRef = userId => {
+        return this.db.ref().child(`users/${userId}`)
     }
-    signOut = () => {
-        this.auth.signOut()        
+    getAllUsersRef = () => {
+        return this.db.ref().child('users')
+    }
+    //Posts
+    getAllPostsRef = async () => {
+        return await this.db.ref('posts')
+    }        
+    getPostRef = postId => {
+        return this.db.ref().child(`users/${postId}`)
+    }
+    //add new post
+    addNewPost = async (title, content, userId) => {
+        try {
+            const postsRef = await this.db.ref().child('posts')
+            const newPostId = await postsRef.push().key
+            let updates = {}
+            updates[`/posts/${newPostId}`] = { postId: newPostId, title, content, userId }
+            //Relation
+            newPost[`/user-posts/${userId}/${newPostId}`] = { postId: newPostId, title, content,userId }
+            await this.db.ref().update(updates)
+        }catch(error) {
+            throw error
+        }
     }    
-    sendPasswordResetEmail = (email) => {
-        this.auth.sendPasswordResetEmail(email)
+    deletePost = async (postId, userId) => {
+        await this.db.ref(`/posts/${postId}`).remove()
+        await this.db.ref(`/user-posts/${userId}/${postId}`).remove()
     }
 }
 //Higher order component - HOC
@@ -38,7 +59,6 @@ const withFirebase = Component => (props) => (<FirebaseContext.Consumer>
 </FirebaseContext.Consumer>)
 
 export {
-    Firebase,
-    FirebaseContext,
-    withFirebase
+    withFirebase,
+    Firebase
 }
