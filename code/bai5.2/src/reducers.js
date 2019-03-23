@@ -35,10 +35,13 @@ const productReducer = (state = [], action) => {
             return state
     }
 }
-const modificationTypeReducer = (state="insert", action) => {
+const modificationTypeReducer = (state={modificationType: "insert", productId=''}, action) => {
     switch(action.type) {
         case ACTION_CHANGE_TYPE: {
-            return action.modificationType
+            return {
+                modificationType: action.modificationType,
+                productId: action.productId
+            }
         }
     }
     return state

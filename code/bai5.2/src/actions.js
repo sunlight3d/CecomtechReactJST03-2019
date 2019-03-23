@@ -26,10 +26,11 @@ const deleteProduct = (productId) => {
         productId
     }
 }
-const changeModificationType = (modificationType) => {
+const changeModificationType = (modificationType="insert", productId='') => {
     return {
         type: ACTION_CHANGE_TYPE,
-        modificationType
+        modificationType,
+        productId
     }
 }
 export {
