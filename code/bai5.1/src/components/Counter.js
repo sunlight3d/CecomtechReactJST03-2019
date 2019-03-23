@@ -3,12 +3,14 @@ import 'foundation-sites/dist/css/foundation.min.css'
 import Foundation,{Button, Label, Colors, Sizes} from 'react-foundation'
 import {connect} from 'react-redux'
 import {increase, decrease} from '../actions'
+import {Provider} from 'react-redux'
+import store from '../store'
 class Counter extends Component {    
     constructor(props) {
         super(props)
     }
     render() {
-        const {dispatch} = this.props
+        const {dispatch, counts} = this.props
         return (<div>
             <Label size={Sizes.LARGE}>Counter :</Label>
             <Button color={Colors.PRIMARY} size={Sizes.SMALL}
@@ -17,6 +19,7 @@ class Counter extends Component {
                 }}>
 
             </Button>
+            <Label size={Sizes.LARGE} color={Colors.ALERT}>Number: {counts}</Label>
             <Button color={Colors.PRIMARY} size={Sizes.SMALL}
                 onClick={(event) => {
                     dispatch(decrease(2))
@@ -26,9 +29,14 @@ class Counter extends Component {
         </div>)
     }
 }
-const mapStateToProps = (state = 0) => {
+const mapStateToProps = (state) => {
     return {
-        counts: state
+        counts: state.counterReducer
     }
 }
-export default connect(mapStateToProps)(Counter)
+const withProvider = Component = (props) => {
+    return <Provider store={store}>
+        <Component {...props}/>
+    </Provider>
+}
+export default withProvider(connect(mapStateToProps)(Counter))
