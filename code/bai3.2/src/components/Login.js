@@ -4,6 +4,7 @@ import 'foundation-sites/dist/css/foundation.min.css'
 import Foundation,{Icon, MenuIcon, MenuItem, Link, Button, Colors, Sizes} from 'react-foundation'
 import {withFirebase, Firebase} from '../Firebase/Firebase'
 import {withRouter} from 'react-router-dom'
+import Header from './Header';
 
 const INITIAL_STATE = {
     email: '',
@@ -29,10 +30,22 @@ class Login extends Component {
             this.setState({error})
         }        
     }
+    onSigninFacebook = async (event) => {
+        const {auth, facebookAuthProvider} = this.props.firebase
+        try {
+            let result = await auth.signInWithPopup(facebookAuthProvider)
+            const {accessToken} = result.credential
+            const {user} = result
+            this.setState({isSignedIn: true})
+            history.push('/')
+        } catch(error) {
+            this.setState({error})
+        }
+    }
     onSignout = async (event) => {
         const {signOut} = this.props.firebase.auth
         try {
-            await this.props.firebase.signOut()
+            await signOut()
 
         } catch(error) {
             this.setState({error})
@@ -46,30 +59,37 @@ class Login extends Component {
     }
     render(){
         const {email, password, showPassword, error, isSignedIn} = this.state
-        return (<form className="login-form">
-            <h4 className="text-center">Login your account</h4>
-            <label>Email
-                <input type="text" 
-                    placeholder="Enter email"
-                    onChange={this.onChangeText} 
+        return (<div>
+            <form className="login-form">
+                <Header />
+                <h4 className="text-center">Login your account</h4>
+                <label>Email
+                <input type="text"
+                        placeholder="Enter email"
+                        onChange={this.onChangeText}
+                    />
+                </label>
+                <label>Password<input type={showPassword ? "text" : "password"}
+                    placeholder="Enter password"
+                    onChange={this.onChangeText}
                 />
-            </label>
-            <label>Password<input type={showPassword ? "text" : "password"} 
-                placeholder="Enter password" 
-                onChange={this.onChangeText}
-            />
-                <input id="show-password" type="checkbox" 
-                name="showPassword"
-                onChange={this.onChangeCheckbox}
-                />
-            </label>
-            <label for="show-password">Show password</label>
-            <Button size={Sizes.SMALL} color={Colors.PRIMARY} 
-                onClick={isSignedIn ? this.onSignout : this.onSignin}
-                className="button expanded">{isSignedIn ? "Sign out": "Sign in"}
-            </Button>
-            {error && <Label color={Colors.ALERT}>{error.message}</Label>}
-        </form>)
+                    <input id="show-password" type="checkbox"
+                        name="showPassword"
+                        onChange={this.onChangeCheckbox}
+                    />
+                </label>
+                <label for="show-password">Show password</label>
+                <Button size={Sizes.SMALL} color={Colors.PRIMARY}
+                    onClick={isSignedIn ? this.onSignout : this.onSignin}
+                    className="button expanded">{isSignedIn ? "Sign out" : "Sign in"}
+                </Button>
+                <Button size={Sizes.SMALL} color={Colors.INFO}
+                    onClick={isSignedIn ? this.onSignout : this.onSigninFacebook}
+                    className="button expanded">{isSignedIn ? "Sign out" : "Sign in"}
+                </Button>
+                {error && <Label color={Colors.ALERT}>{error.message}</Label>}
+            </form>
+        </div>)
     }
 }
 export default withRouter(withFirebase(Login))

@@ -18,7 +18,7 @@ class App extends Component {
       <Router>
         <Switch>
           <Route exact path="/" component={PostsList}/>
-          <Route path="/detailPost/:id" component={DetailPost}/>
+          <Route path="/detailPost/:postId" component={DetailPost}/>
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register}/>
         </Switch>

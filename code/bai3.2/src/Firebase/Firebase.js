@@ -19,6 +19,8 @@ class Firebase {
         this.auth = app.auth()
         this.db = app.database()
         this.storage = app.storage()
+        this.facebookAuthProvider = new app.auth.FacebookAuthProvider()
+        this.facebookAuthProvider.setCustomParameters({display: 'popup'})
     }
     
     getUserRef = userId => {
@@ -42,13 +44,23 @@ class Firebase {
             let updates = {}
             updates[`/posts/${newPostId}`] = { postId: newPostId, title, content, userId }
             //Relation
-            newPost[`/user-posts/${userId}/${newPostId}`] = { postId: newPostId, title, content,userId }
+            updates[`/user-posts/${userId}/${newPostId}`] = { postId: newPostId, title, content,userId }
             await this.db.ref().update(updates)
         }catch(error) {
             throw error
         }
     }    
-    deletePost = async (postId, userId) => {
+    updatePost = async (postId, title, content, userId) => {
+        try {                        
+            updates[`/posts/${postId}`] = { postId, title, content, userId }
+            //Relation
+            newPost[`/user-posts/${userId}/${postId}`] = { postId, title, content,userId }
+            await this.db.ref().update(updates)
+        }catch(error) {
+            throw error
+        }
+    }    
+    deletePost = async (userId, postId) => {
         await this.db.ref(`/posts/${postId}`).remove()
         await this.db.ref(`/user-posts/${userId}/${postId}`).remove()
     }
