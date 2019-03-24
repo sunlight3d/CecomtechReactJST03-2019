@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import 'foundation-sites/dist/css/foundation.min.css'
-import Foundation,{ 
-    Link as FoundationLink, 
-    Button, Colors, Sizes, Callout, Label} from 'react-foundation'
+import {     
+    Button, Colors, Sizes, Callout, Label
+} from 'react-foundation'
 import './PostsList.css'
 import Header from './Header';
 import {withFirebase} from '../Firebase/Firebase'
@@ -12,21 +12,21 @@ class PostsList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            authUser: null,
+            authUser: {},
             posts: []            
         }
     }
     componentDidMount() {
-        const {firebase} = this.props
-        this.listener = firebase.onAuthStateChanged(
-            authUser => {
+        const {firebase} = this.props        
+        this.listener = firebase.auth.onAuthStateChanged(
+            authUser => {                
                 authUser ? this.setState({authUser}):this.setState({authUser: null})
             }
         )
-        firebase.ref('posts/').on('value', snapshot => {
+        firebase.db.ref('posts/').on('value', snapshot => {
             //this.setState({posts: snapshot.val()})
             let posts = snapshot.forEach(childSnapshot => {
-                let childKey = childSnapshot.key
+                // let childKey = childSnapshot.key
                 let post = childSnapshot.val()
                 return post                
             })
@@ -37,11 +37,13 @@ class PostsList extends Component {
         
     }
     onAddPost = (event) => {
-        const {match, location,history} = this.props
+        const {history} = this.props
         history.push('/detailPost/0')
     }
     mapPostsToList = (posts=[]) => {
-        const {uid='', email=''} = this.state.authUser.user                        
+        //alert(`this.state.authUser = ${this.state.authUser}`)
+        const {auth} = this.props.firebase        
+        const {uid=''} = auth.currentUser || {uid:'', email:''}
         let callouts = posts.map((post, index) => {
             const userCanEdit = post.userId === uid            
             return (<Callout color={index % 2 === 0 ? Colors.SECONDARY : Colors.WARNING}>

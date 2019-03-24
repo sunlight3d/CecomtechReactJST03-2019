@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import './Login.css'
 import 'foundation-sites/dist/css/foundation.min.css'
-import Foundation,{Link as FoundationLink, Button, Colors, Sizes, Label} from 'react-foundation'
+import {Button, Colors, Sizes, Label as FoundationLabel} from 'react-foundation'
 import {withFirebase} from '../Firebase/Firebase'
 import {withRouter} from 'react-router-dom'
 
@@ -12,30 +12,34 @@ class Register extends Component {
             email: '',
             password: '',
             error: null,
+            showPassword: false
         }
     }
-    onChangeText = (event) => {
-        const key = event.target.name
-        const value = event.target.value
-        this.setState({key: value})
+    onChangeText = (event) => {                
+        this.setState({[event.target.name]: event.target.value})
     }
-    onRegister = async (event) => {
+    onRegister = (event) => {
         event.preventDefault()
         const {name, email, password} = this.state
         const {firebase, history} = this.props
-        const {createUserWithEmailAndPassword} = firebase.auth
-        try {
-            const authUser = await createUserWithEmailAndPassword(email, password)
-            await firebase.getUserRef(authUser.user.uid).set({name, email})
+        const {createUserWithEmailAndPassword} = firebase
+        createUserWithEmailAndPassword(email, password).then((authUser) => {    
+            alert('aa')        
+            this.setState({isSignedIn: true})
             history.push('/')
-        } catch(error) {
+        }).catch(error => {
+            alert('bb')        
             this.setState({error})
-        }
+        })                
     }
+    onChangeCheckbox = (event) => {
+        this.setState({showPassword: !this.state.showPassword})
+    }
+
     render(){
-        const {email, password, retypePassword, error} = this.state
-        const isInvalidInput = password !== retypePassword ||
-                            password !== '' || email !== ''
+        const {name, email, password, retypePassword, error, showPassword} = this.state
+        const isInvalidInput = name === '' || password !== retypePassword ||
+                            password === '' || email === ''
 
         return (<form className="login-form" onSubmit={this.onSubmit}>
             <h4 className="text-center">Register your account</h4>
@@ -50,20 +54,25 @@ class Register extends Component {
                 name="email" />
             </label>
             <label>Password
-                <input type="password" placeholder="Enter password"
+                <input placeholder="Enter password"
+                type={showPassword ? "text" : "password"}
                 onChange={this.onChangeText}
                 name="password" />
             </label>
-            <label>Retype password<input type="password" placeholder="Retype password"
+            <label>Retype password<input placeholder="Retype password"
+                type={showPassword ? "text" : "password"}
                 onChange={this.onChangeText}
                 name="retypePassword" /></label>
-            <input id="show-password" type="checkbox" /><label for="show-password">Show password</label>
+            <input id="show-password" type="checkbox" 
+                onChange={this.onChangeCheckbox}/>
+            <label>Show password</label>
             <Button isDisabled={isInvalidInput} size={Sizes.SMALL} 
                 color={Colors.PRIMARY} 
                 onClick={this.onRegister}
                 className="button expanded">Register
             </Button>
-            {error && <Label color={Colors.ALERT}>{error.message}</Label>}
+            {error && <FoundationLabel color={Colors.ALERT}>{error.message}</FoundationLabel>}
         </form>)
     }
 }
+export default withRouter(withFirebase(Register))

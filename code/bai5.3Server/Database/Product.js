@@ -1,7 +1,17 @@
 import {pool} from './Database/Database'
 
 const getAllProducts = (request, response) => {
-
+    sql = 'SELECT * FROM Products ORDER BY productId ASC'
+    pool.query(sql,(error, result) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json({
+            result: 'ok',
+            message: 'Query Product successfully',
+            data: result.rows
+        })
+    }) 
 }
 
 const getProductById = (request, response) => {
@@ -17,6 +27,7 @@ const getProductById = (request, response) => {
         })
     })
 }
+
 const insertProduct = (request, response) => {
     const {productName, year, description} = request.body
     const sql = "INSERT INTO Products(productName, year, description) VALUES($1, $2, $3)"
@@ -45,6 +56,7 @@ const updateProduct = (request, response) => {
         })
     })
 }
+
 const deleteProduct = (request, response) => {
     const {productId} = req.body
     const sql = "DELETE FROM Products WHERE productId = $1"
@@ -57,4 +69,11 @@ const deleteProduct = (request, response) => {
             message: 'Delete data successfully',            
         })        
     })
+}
+export {
+    getAllProducts,
+    getProductById,
+    insertProduct,
+    updateProduct,
+    deleteProduct
 }

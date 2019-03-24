@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import './Login.css'
 import 'foundation-sites/dist/css/foundation.min.css'
-import Foundation,{Icon, MenuIcon, MenuItem, Link, Button, Colors, Sizes} from 'react-foundation'
-import {withFirebase, Firebase} from '../Firebase/Firebase'
+import {
+    Label as FoundationLabel,
+    Button, Colors, Sizes} from 'react-foundation'
+import {withFirebase } from '../Firebase/Firebase'
 import {withRouter} from 'react-router-dom'
 import Header from './Header';
 
@@ -18,20 +20,23 @@ class Login extends Component {
         super(props)
         this.state = INITIAL_STATE
     }
-    onSignin = async (event) => {
+    onSignin = (event) => {        
+        event.preventDefault()
         const {email, password} = this.state
         const {firebase, history} = this.props
-        const {signInWithEmailAndPassword} = firebase.auth
-        try {
-            await signInWithEmailAndPassword(email, password)
+        const {signInWithEmailAndPassword} = firebase
+        signInWithEmailAndPassword(email, password).then(() => {    
+            alert('aa')        
             this.setState({isSignedIn: true})
             history.push('/')
-        } catch(error) {
+        }).catch(error => {
+            alert('bb')        
             this.setState({error})
-        }        
+        })        
     }
     onSigninFacebook = async (event) => {
         const {auth, facebookAuthProvider} = this.props.firebase
+        const {history} = this.props
         try {
             let result = await auth.signInWithPopup(facebookAuthProvider)
             const {accessToken} = result.credential
@@ -46,13 +51,12 @@ class Login extends Component {
         const {signOut} = this.props.firebase.auth
         try {
             await signOut()
-
         } catch(error) {
             this.setState({error})
         }        
     }
-    onChange = (event) => {
-        this.setState({[$event.target.name]: event.target.value})
+    onChangeText = (event) => {        
+        this.setState({[event.target.name]: event.target.value})        
     }
     onChangeCheckbox = (event) => {
         this.setState({showPassword: !this.state.showPassword})
@@ -60,34 +64,35 @@ class Login extends Component {
     render(){
         const {email, password, showPassword, error, isSignedIn} = this.state
         return (<div>
+            <Header />
             <form className="login-form">
-                <Header />
                 <h4 className="text-center">Login your account</h4>
                 <label>Email
                 <input type="text"
                         placeholder="Enter email"
+                        name="email"
                         onChange={this.onChangeText}
                     />
                 </label>
                 <label>Password<input type={showPassword ? "text" : "password"}
                     placeholder="Enter password"
+                    name="password"
                     onChange={this.onChangeText}
                 />
                     <input id="show-password" type="checkbox"
                         name="showPassword"
                         onChange={this.onChangeCheckbox}
-                    />
+                    />Show password
                 </label>
-                <label for="show-password">Show password</label>
                 <Button size={Sizes.SMALL} color={Colors.PRIMARY}
                     onClick={isSignedIn ? this.onSignout : this.onSignin}
                     className="button expanded">{isSignedIn ? "Sign out" : "Sign in"}
                 </Button>
-                <Button size={Sizes.SMALL} color={Colors.INFO}
+                <Button size={Sizes.SMALL} color={Colors.SUCCESS}
                     onClick={isSignedIn ? this.onSignout : this.onSigninFacebook}
-                    className="button expanded">{isSignedIn ? "Sign out" : "Sign in"}
+                    className="button expanded">{isSignedIn ? "Sign out" : "Sign in with Facebook"}
                 </Button>
-                {error && <Label color={Colors.ALERT}>{error.message}</Label>}
+                {error && <FoundationLabel color={Colors.ALERT}>{error.message}</FoundationLabel>}
             </form>
         </div>)
     }

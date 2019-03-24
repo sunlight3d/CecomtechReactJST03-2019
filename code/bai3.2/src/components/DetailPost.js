@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import 'foundation-sites/dist/css/foundation.min.css'
-import Foundation,{Icon, MenuIcon, MenuItem, Link, Button, Colors, Sizes} from 'react-foundation'
+import {Button, Colors} from 'react-foundation'
 import {withRouter} from 'react-router-dom'
 import {withFirebase} from '../Firebase/Firebase'
 import Header from './Header'
@@ -17,12 +17,12 @@ class DetailPost extends Component {
         const {title='', content=''} = this.state.post
         let userId = this.props.firebase.auth.currentUser.uid
         const {history} = this.props
-        if (title == '' || content == '') {
+        if (title === '' || content === '') {
             alert(`Please input your detail's post`)
             return
         }
         try {
-            postId == '0' ? await addNewPost(title, content, userId) : updatePost(postId, title, content, userId)
+            postId === '0' ? await addNewPost(title, content, userId) : updatePost(postId, title, content, userId)
             this.setState({post: {postId, title, content, userId}})
             history.goBack()
         } catch(error) {
@@ -53,7 +53,7 @@ class DetailPost extends Component {
                 </table>
                 <Button color={Colors.PRIMARY}
                     onClick={(event) => this.insertOrUpdatePost}
-                >{postId == '0' ? "Add Post" : "Save your Post"}</Button>
+                >{postId === '0' ? "Add Post" : "Save your Post"}</Button>
             </form>
         </div>)
     }
