@@ -28,6 +28,7 @@ class Firebase {
     }
     signInWithEmailAndPassword = (email, password) => this.auth.signInWithEmailAndPassword(email, password)
     createUserWithEmailAndPassword = (email, password) => this.auth.createUserWithEmailAndPassword(email, password)
+    signOut = () => this.auth.signOut()
     getUserRef = userId => {
         return this.db.ref().child(`users/${userId}`)
     }

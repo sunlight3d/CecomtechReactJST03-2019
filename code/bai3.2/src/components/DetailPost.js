@@ -40,17 +40,14 @@ class DetailPost extends Component {
         const {postId} = this.props.match.params
         return (<div>
             <Header />
+            <h3>Enter your post detail</h3>
             <form>
-                <table>
-                    <tr>
-                        <td>Post's title</td>
-                        <td><input type="text" placeholder="Enter your post's title" /></td>
-                    </tr>
-                    <tr>
-                        <td>Your post's content</td>
-                        <td><textarea rows="4" cols="50" placeholder="Enter your content here" /></td>
-                    </tr>
-                </table>
+                <label>
+                    <input type="text" placeholder="Enter your post's title" />
+                </label>
+                <label>
+                    <textarea rows="4" cols="50" placeholder="Enter your content here" />
+                </label>                
                 <Button color={Colors.PRIMARY}
                     onClick={(event) => this.insertOrUpdatePost}
                 >{postId === '0' ? "Add Post" : "Save your Post"}</Button>

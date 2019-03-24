@@ -69,10 +69,10 @@ class PostsList extends Component {
         const {posts=[]} = this.state
         return <div className="container">
             <Header />
-            <h2>This is your Posts</h2>
+            <h3>All posts here</h3>
             {this.mapPostsToList(posts)}
             <Button onClick={this.onAddPost}>
-
+                Add new post
             </Button>
         </div>
     }

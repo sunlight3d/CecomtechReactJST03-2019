@@ -4,7 +4,7 @@ import 'foundation-sites/dist/css/foundation.min.css'
 import {Button, Colors, Sizes, Label as FoundationLabel} from 'react-foundation'
 import {withFirebase} from '../Firebase/Firebase'
 import {withRouter} from 'react-router-dom'
-
+import Header from './Header'
 class Register extends Component {
     constructor(props) {
         super(props)
@@ -23,12 +23,10 @@ class Register extends Component {
         const {name, email, password} = this.state
         const {firebase, history} = this.props
         const {createUserWithEmailAndPassword} = firebase
-        createUserWithEmailAndPassword(email, password).then((authUser) => {    
-            alert('aa')        
+        createUserWithEmailAndPassword(email, password).then((authUser) => {                
             this.setState({isSignedIn: true})
             history.push('/')
-        }).catch(error => {
-            alert('bb')        
+        }).catch(error => {            
             this.setState({error})
         })                
     }
@@ -41,7 +39,9 @@ class Register extends Component {
         const isInvalidInput = name === '' || password !== retypePassword ||
                             password === '' || email === ''
 
-        return (<form className="login-form" onSubmit={this.onSubmit}>
+        return (<div>
+            <Header></Header>
+            <form className="login-form" onSubmit={this.onSubmit}>
             <h4 className="text-center">Register your account</h4>
             <label>Name
                 <input type="text" placeholder="Enter your name"
@@ -63,7 +63,7 @@ class Register extends Component {
                 type={showPassword ? "text" : "password"}
                 onChange={this.onChangeText}
                 name="retypePassword" /></label>
-            <input id="show-password" type="checkbox" 
+            <input id="show-password" type="checkbox"                 
                 onChange={this.onChangeCheckbox}/>
             <label>Show password</label>
             <Button isDisabled={isInvalidInput} size={Sizes.SMALL} 
@@ -72,7 +72,8 @@ class Register extends Component {
                 className="button expanded">Register
             </Button>
             {error && <FoundationLabel color={Colors.ALERT}>{error.message}</FoundationLabel>}
-        </form>)
+        </form>
+        </div>)
     }
 }
 export default withRouter(withFirebase(Register))
