@@ -11,6 +11,8 @@ class DetailPost extends Component {
         this.state = { 
             title: '',
             content: '', 
+            postId: '',
+            userId: '',
             error:null 
         }
     }
@@ -55,12 +57,14 @@ class DetailPost extends Component {
     componentDidMount() {
         const {db} = this.props.firebase
         const {postId} = this.props.match.params        
-        db.ref().child(`/posts/${postId}`).on('value', snapshot => {
-            this.setState({post: snapshot.val()})
+        db.ref().child(`posts/${postId}`).on('value', snapshot => {
+            let {title='', content ='', postId='', userId=''} = snapshot.val()
+            this.setState({title, content, postId, userId})
         })
     }
     render() {
         const {postId} = this.props.match.params
+        const {title, content} = this.state
         return (<div>
             <Header />
             <h3>Enter your post detail</h3>
@@ -69,12 +73,14 @@ class DetailPost extends Component {
                     <input type="text" 
                         name='title'
                         onChange={this.onChangeText}
+                        value={title}
                         placeholder="Enter your post's title" />
                 </label>
                 <label>
                     <textarea rows="4" cols="50" 
                         name='content'
                         onChange={this.onChangeText}
+                        value={content}
                         placeholder="Enter your content here" />
                 </label>                
                 <Button color={Colors.PRIMARY}

@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import 'foundation-sites/dist/css/foundation.min.css'
 import {     
-    Button, Colors, Sizes, Callout, Label
+    Button, 
+    ButtonGroup,
+    Colors, Sizes, Callout, Label
 } from 'react-foundation'
 import './PostsList.css'
 import Header from './Header';
@@ -24,14 +26,11 @@ class PostsList extends Component {
             }
         )
         firebase.db.ref('posts').on('value', snapshot => {
-            //this.setState({posts: snapshot.val()})
-            if(!snapshot.val()) {
-                return
-            }
-            let posts = snapshot.forEach(childSnapshot => {
+            let posts = []
+            snapshot.forEach(childSnapshot => {
                 // let childKey = childSnapshot.key
                 let post = childSnapshot.val()
-                return post                
+                posts.push(post)                
             })
             this.setState({posts})
         })
@@ -43,34 +42,42 @@ class PostsList extends Component {
         const {history} = this.props
         history.push('/detailPost/0')
     }
+    navigateToEdit = (postId) => {
+        this.props.history.push(`/detailPost/${postId}`)
+    }
     mapPostsToList = (posts=[]) => {
         //alert(`this.state.authUser = ${this.state.authUser}`)
-        const {auth} = this.props.firebase        
+        const {auth, deletePost} = this.props.firebase        
         const {uid=''} = auth.currentUser || {uid:'', email:''}
         let callouts = posts.map((post, index) => {
-            const userCanEdit = post.userId === uid            
-            return (<Callout color={index % 2 === 0 ? Colors.SECONDARY : Colors.WARNING}>
-                <Label size={Sizes.SMALL}>{post.title}</Label>
-                <Label size={Sizes.SMALL}>{post.content}</Label>                
-                {userCanEdit &&<Link to={`/detailPost/${post.postId}`}>Click here to Edit.</Link> }
-                {userCanEdit &&<Button color={Colors.ALERT} 
-                    onClick={(event) => {
-                        if(prompt('Are you you want to delete this ?')){
-                            this.onDeletePost(post.postId)
-                        } else {
-
-                        }                        
-                    }}
-                    size={Sizes.SMALL}>
-                    Delete this post
-                </Button> }
+            let userCanEdit = post.userId === uid            
+            return (<Callout color={index % 2 === 0 ? Colors.SECONDARY : Colors.WARNING}
+                    key={post.postId}>
+                <p>{post.title}</p>
+                <p>{post.content}</p>
+                <ButtonGroup>
+                    {userCanEdit && <Button 
+                        onClick={event => {
+                            this.navigateToEdit(post.postId)
+                        }}
+                        color={Colors.PRIMARY}>Click here to Edit</Button>}
+                    {userCanEdit && <Button color={Colors.ALERT}
+                        onClick={(event) => {
+                            if (window.confirm('Are you you want to delete this ?')===true) {
+                                deletePost(post.userId, post.postId)
+                            } 
+                        }}
+                        size={Sizes.SMALL}>
+                        Delete this post
+                </Button>}
+                </ButtonGroup>
+                
             </Callout>)
         })
         return callouts
     }
     render(){
         const {posts=[]} = this.state
-        alert(`posts = ${posts}`)
         return <div className="container">
             <Header />
             <h3>All posts here</h3>

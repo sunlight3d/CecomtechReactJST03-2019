@@ -53,19 +53,19 @@ class Firebase {
         return this.db.ref().update(updates) //a promise
     }    
     updatePost = async (postId, title, content, userId) => {
-        try {               
-            let updates = {}         
-            updates[`/posts/${postId}`] = { postId, title, content, userId }
-            //Relation
-            updates[`/user-posts/${userId}/${postId}`] = { postId, title, content,userId }
-            await this.db.ref().update(updates)
+        let updates = {}
+        updates[`/posts/${postId}`] = { postId, title, content, userId }
+        //Relation
+        updates[`/user-posts/${userId}/${postId}`] = { postId, title, content, userId }
+        return this.db.ref().update(updates)
+    }    
+    deletePost = async (userId, postId) => {
+        try {
+            await this.db.ref(`posts/${postId}`).remove()
+            await this.db.ref(`user-posts/${userId}/${postId}`).remove()
         }catch(error) {
             throw error
         }
-    }    
-    deletePost = async (userId, postId) => {
-        await this.db.ref(`/posts/${postId}`).remove()
-        await this.db.ref(`/user-posts/${userId}/${postId}`).remove()
     }
     uploadImage = () => {        
         /*
