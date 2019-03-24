@@ -23,8 +23,11 @@ class PostsList extends Component {
                 authUser ? this.setState({authUser}):this.setState({authUser: null})
             }
         )
-        firebase.db.ref('posts/').on('value', snapshot => {
+        firebase.db.ref('posts').on('value', snapshot => {
             //this.setState({posts: snapshot.val()})
+            if(!snapshot.val()) {
+                return
+            }
             let posts = snapshot.forEach(childSnapshot => {
                 // let childKey = childSnapshot.key
                 let post = childSnapshot.val()
@@ -67,6 +70,7 @@ class PostsList extends Component {
     }
     render(){
         const {posts=[]} = this.state
+        alert(`posts = ${posts}`)
         return <div className="container">
             <Header />
             <h3>All posts here</h3>

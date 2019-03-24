@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import 'foundation-sites/dist/css/foundation.min.css'
 import {Button, Colors} from 'react-foundation'
 import {withRouter} from 'react-router-dom'
@@ -8,31 +8,54 @@ import Header from './Header'
 class DetailPost extends Component {
     constructor(props) {
         super(props)
-        this.state = { post: null, error:null }
+        this.state = { 
+            title: '',
+            content: '', 
+            error:null 
+        }
     }
 
     insertOrUpdatePost = async () => {
+        const {firebase} = this.props
+        if(!firebase.auth.currentUser) {
+            alert('You must login before adding new Post')
+            return
+        }                
         const {postId} = this.props.match.params
-        const {addNewPost, updatePost} = this.props.firebase        
-        const {title='', content=''} = this.state.post
-        let userId = this.props.firebase.auth.currentUser.uid
+        // alert(`postId = ${postId}`)
+        const {addNewPost, updatePost} = firebase        
+        
+        const {uid=''} = firebase.auth.currentUser        
         const {history} = this.props
+        const {title='', content=''} = this.state        
         if (title === '' || content === '') {
             alert(`Please input your detail's post`)
             return
-        }
-        try {
-            postId === '0' ? await addNewPost(title, content, userId) : updatePost(postId, title, content, userId)
-            this.setState({post: {postId, title, content, userId}})
-            history.goBack()
+        }        
+        try {            
+            if(postId === '0') {
+                alert('1')
+                await addNewPost(title, content, uid)
+            } else {
+                alert('2')
+                await updatePost(postId, title, content, uid)
+            }           
+            alert('3') 
+            this.setState({postId, title, content, userId: uid})
+            alert('aa11')
+            history.goBack()            
         } catch(error) {
+            alert('bb')
             this.setState({error})
         }        
+    }
+    onChangeText = (event) => {
+        this.setState({[event.target.name]: event.target.value})
     }
     componentDidMount() {
         const {db} = this.props.firebase
         const {postId} = this.props.match.params        
-        db.ref().child(`/posts/${postId}`).on(snapshot => {
+        db.ref().child(`/posts/${postId}`).on('value', snapshot => {
             this.setState({post: snapshot.val()})
         })
     }
@@ -43,13 +66,19 @@ class DetailPost extends Component {
             <h3>Enter your post detail</h3>
             <form>
                 <label>
-                    <input type="text" placeholder="Enter your post's title" />
+                    <input type="text" 
+                        name='title'
+                        onChange={this.onChangeText}
+                        placeholder="Enter your post's title" />
                 </label>
                 <label>
-                    <textarea rows="4" cols="50" placeholder="Enter your content here" />
+                    <textarea rows="4" cols="50" 
+                        name='content'
+                        onChange={this.onChangeText}
+                        placeholder="Enter your content here" />
                 </label>                
                 <Button color={Colors.PRIMARY}
-                    onClick={(event) => this.insertOrUpdatePost}
+                    onClick={(event) => this.insertOrUpdatePost()}
                 >{postId === '0' ? "Add Post" : "Save your Post"}</Button>
             </form>
         </div>)

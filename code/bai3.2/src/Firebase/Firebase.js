@@ -43,18 +43,14 @@ class Firebase {
         return this.db.ref().child(`users/${postId}`)
     }
     //add new post
-    addNewPost = async (title, content, userId) => {
-        try {
-            const postsRef = await this.db.ref().child('posts')
-            const newPostId = await postsRef.push().key
-            let updates = {}
-            updates[`/posts/${newPostId}`] = { postId: newPostId, title, content, userId }
-            //Relation
-            updates[`/user-posts/${userId}/${newPostId}`] = { postId: newPostId, title, content,userId }
-            await this.db.ref().update(updates)
-        }catch(error) {
-            throw error
-        }
+    addNewPost = (title, content, userId) => {
+        const postsRef = this.db.ref().child('posts')
+        const newPostId = postsRef.push().key
+        let updates = {}
+        updates[`/posts/${newPostId}`] = { postId: newPostId, title, content, userId }
+        //Relation
+        updates[`/user-posts/${userId}/${newPostId}`] = { postId: newPostId, title, content,userId }
+        return this.db.ref().update(updates) //a promise
     }    
     updatePost = async (postId, title, content, userId) => {
         try {               

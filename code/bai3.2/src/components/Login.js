@@ -25,12 +25,10 @@ class Login extends Component {
         const {email, password} = this.state
         const {firebase, history} = this.props
         const {signInWithEmailAndPassword} = firebase
-        signInWithEmailAndPassword(email, password).then(() => {    
-            alert('aa')        
+        signInWithEmailAndPassword(email, password).then(() => {                
             this.setState({isSignedIn: true})
             history.push('/')
-        }).catch(error => {
-            alert('bb')        
+        }).catch(error => {            
             this.setState({error})
         })        
     }
