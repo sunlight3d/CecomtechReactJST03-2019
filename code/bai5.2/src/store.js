@@ -1,7 +1,11 @@
+import React, {Component} from 'react'
 import rootReducer from './reducers'
 import {createStore} from 'redux'
 import {Provider} from 'react-redux'
-export const withProvider = Component = (props) => {
-    return <Provider {...props} store={store}/>
+const store = createStore(rootReducer)
+export const withProvider = Component => (props) => {
+    return <Provider store={store}>
+        <Component {...props}/>
+    </Provider>
 }
-export default createStore(rootReducer)
+export default store

@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux'
-import {ACTION_INSERT_PRODUCT, 
+import {
     ACTION_INSERT_PRODUCT, 
     ACTION_DELETE_PRODUCT, 
     ACTION_UPDATE_PRODUCT,
@@ -22,8 +22,12 @@ const productReducer = (state = [], action) => {
         }
         case ACTION_UPDATE_PRODUCT: {
             return state.map(product => {
-                if (product.productId === action.productId) {                
-                    return Object.assign({productName, year, description}, product)
+                if (product.productId === action.productId) {        
+                    let clonedObject = Object.assign({}, product)
+                    clonedObject.productName = action.productName
+                    clonedObject.year = action.year
+                    clonedObject.description = action.description      
+                    return clonedObject
                 }
                 return product
             })
@@ -35,7 +39,7 @@ const productReducer = (state = [], action) => {
             return state
     }
 }
-const modificationTypeReducer = (state={modificationType: "insert", productId=''}, action) => {
+const modificationTypeReducer = (state={modificationType: "insert", productId:''}, action) => {
     switch(action.type) {
         case ACTION_CHANGE_TYPE: {
             return {

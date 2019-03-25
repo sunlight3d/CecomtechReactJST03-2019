@@ -12,19 +12,19 @@ class Counter extends Component {
     render() {
         const {dispatch, counts} = this.props
         return (<div>
-            <Label size={Sizes.LARGE}>Counter :</Label>
+            <h1>Counter with Redux</h1><br/>
             <Button color={Colors.PRIMARY} size={Sizes.SMALL}
                 onClick={(event) => {
                     dispatch(increase(2))
                 }}>
-
-            </Button>
-            <Label size={Sizes.LARGE} color={Colors.ALERT}>Number: {counts}</Label>
+                Increase
+            </Button> <br/>
+            <h1>Number: {counts}</h1>
             <Button color={Colors.PRIMARY} size={Sizes.SMALL}
                 onClick={(event) => {
                     dispatch(decrease(2))
                 }}>
-
+                Decrease
             </Button>
         </div>)
     }
@@ -34,7 +34,7 @@ const mapStateToProps = (state) => {
         counts: state.counterReducer
     }
 }
-const withProvider = Component = (props) => {
+const withProvider = Component => (props) => {
     return <Provider store={store}>
         <Component {...props}/>
     </Provider>

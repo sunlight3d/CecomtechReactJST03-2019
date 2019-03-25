@@ -13,7 +13,7 @@ class Product extends Component {
         }        
     }
     onChangeText = (event) => {
-        this.setState({[event.targer.name]: event.target.value})
+        this.setState({[event.target.name]: event.target.value})
     }
     submitForm = (event) => {
         const {modificationType,productId, dispatch} = this.props
@@ -21,7 +21,7 @@ class Product extends Component {
         if(modificationType === "insert") {
             dispatch(insertProduct({productName, year, description}))
         } else if(modificationType === 'update') {
-            dispatch(updateProduct(productId))
+            dispatch(updateProduct(productId, productName, year, description))
         }
     }
     reloadData() {
@@ -36,8 +36,10 @@ class Product extends Component {
             }            
         }
     }
+    componentDidMount() {
+        this.reloadData()
+    }
     render() {        
-        reloadData()
         const {productName, year, description} = this.state
         const {modificationType} = this.props
 
