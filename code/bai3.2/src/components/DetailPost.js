@@ -17,7 +17,7 @@ class DetailPost extends Component {
         }
     }
 
-    insertOrUpdatePost = async () => {
+    insertOrUpdatePost = () => {
         const {firebase} = this.props
         if(!firebase.auth.currentUser) {
             alert('You must login before adding new Post')
@@ -28,28 +28,19 @@ class DetailPost extends Component {
         const {addNewPost, updatePost} = firebase        
         
         const {uid=''} = firebase.auth.currentUser        
-        const {history} = this.props
+        const {history} = this.props        
         const {title='', content=''} = this.state        
         if (title === '' || content === '') {
             alert(`Please input your detail's post`)
             return
-        }        
-        try {            
-            if(postId === '0') {
-                alert('1')
-                await addNewPost(title, content, uid)
-            } else {
-                alert('2')
-                await updatePost(postId, title, content, uid)
-            }           
-            alert('3') 
-            this.setState({postId, title, content, userId: uid})
-            alert('aa11')
-            history.goBack()            
-        } catch(error) {
-            alert('bb')
-            this.setState({error})
-        }        
+        }   
+        if(postId === '0') {                
+            addNewPost(title, content, uid)
+        } else {                
+            updatePost(postId, title, content, uid)
+        }       
+        history.push('/')                
+        // this.setState({postId, title, content, userId: uid})            
     }
     onChangeText = (event) => {
         this.setState({[event.target.name]: event.target.value})
@@ -57,10 +48,19 @@ class DetailPost extends Component {
     componentDidMount() {
         const {db} = this.props.firebase
         const {postId} = this.props.match.params        
-        db.ref().child(`posts/${postId}`).on('value', snapshot => {
-            let {title='', content ='', postId='', userId=''} = snapshot.val()
+        if(postId === "0"){
+            return
+        }
+        this.listener = db.ref().child(`posts/${postId}`).on('value', snapshot => {
+            if(!snapshot) {
+                return
+            }
+            let {title='', content ='', postId='', userId=''} = snapshot.val()            
             this.setState({title, content, postId, userId})
-        })
+        })        
+    }
+    componentWillUnmount() {
+        this.listener && this.listener()
     }
     render() {
         const {postId} = this.props.match.params

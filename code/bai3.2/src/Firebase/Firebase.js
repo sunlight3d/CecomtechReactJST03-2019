@@ -52,7 +52,7 @@ class Firebase {
         updates[`/user-posts/${userId}/${newPostId}`] = { postId: newPostId, title, content,userId }
         return this.db.ref().update(updates) //a promise
     }    
-    updatePost = async (postId, title, content, userId) => {
+    updatePost = (postId, title, content, userId) => {
         let updates = {}
         updates[`/posts/${postId}`] = { postId, title, content, userId }
         //Relation

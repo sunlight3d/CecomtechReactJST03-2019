@@ -20,12 +20,15 @@ class PostsList extends Component {
     }
     componentDidMount() {
         const {firebase} = this.props        
-        this.listener = firebase.auth.onAuthStateChanged(
+        this.authListener = firebase.auth.onAuthStateChanged(
             authUser => {                
                 authUser ? this.setState({authUser}):this.setState({authUser: null})
             }
         )
-        firebase.db.ref('posts').on('value', snapshot => {
+        this.listener = firebase.db.ref('posts').on('value', snapshot => {
+            if(!snapshot) {
+                return
+            }
             let posts = []
             snapshot.forEach(childSnapshot => {
                 // let childKey = childSnapshot.key
@@ -36,7 +39,8 @@ class PostsList extends Component {
         })
     }
     componentWillUnmount() {
-        
+        this.listener && this.listener()
+        this.authListener && this.authListener()
     }
     onAddPost = (event) => {
         const {history} = this.props
