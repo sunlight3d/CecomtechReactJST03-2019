@@ -2,12 +2,9 @@
  * brew install postgresql
  * brew services start postgresql
  * brew services stop postgresql
- CREATE TABLE Products(
-     productId SERIAL PRIMARY KEY,
-     productName VARCHAR(200),
-     year INTEGER,
-     description TEXT,
-     )
+ * psql postgres
+ CREATE TABLE Products(productId SERIAL PRIMARY KEY,productName VARCHAR(200),year INTEGER,description TEXT);
+ Display all users: \du
 npm install express pg body-parser
  */
 const express = require('express')

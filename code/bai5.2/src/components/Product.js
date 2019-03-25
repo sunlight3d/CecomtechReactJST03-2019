@@ -21,7 +21,7 @@ class Product extends Component {
         if(modificationType === "insert") {
             dispatch(insertProduct({productName, year, description}))
         } else if(modificationType === 'update') {
-            dispatch(updateProduct(productId, productName, year, description))
+            dispatch(updateProduct({productId, productName, year, description}))
         }
     }
     reloadData() {

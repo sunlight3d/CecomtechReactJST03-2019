@@ -1,4 +1,4 @@
-import {pool} from './Database/Database'
+const {pool} = require('./Database')
 
 const getAllProducts = (request, response) => {
     sql = 'SELECT * FROM Products ORDER BY productId ASC'
@@ -70,7 +70,7 @@ const deleteProduct = (request, response) => {
         })        
     })
 }
-export {
+module.exports = {
     getAllProducts,
     getProductById,
     insertProduct,
