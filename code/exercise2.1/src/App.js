@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import 'react-app-polyfill/ie9'
 import Header from './components/Header'
-import LoginForm from './components/LoginForm'
+import {LoginForm} from './components/LoginForm'
 class App extends Component {
   
   render() {
