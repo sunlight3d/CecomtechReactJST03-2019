@@ -20,4 +20,4 @@ class Header extends Component {
         </div>)
     }
 }
-export default Header
+export default withRouter(Header)
