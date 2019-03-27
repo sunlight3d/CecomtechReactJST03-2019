@@ -7,6 +7,7 @@ import productsReducer from '../Reducers'
 
 import 'foundation-sites/dist/css/foundation.min.css'
 import {Callout, Colors, Sizes, Button} from 'react-foundation'
+import {withRouter} from 'react-router-dom'
 
 const INITIAL_STATE =  {
     productName:'', year:'', description:''
@@ -19,37 +20,33 @@ class DetailProduct extends Component {
     
     handleInsertUpdate = (event) => {
         event.preventDefault()
-        const {dispatch, crudType, productId} = this.props
+        const {dispatch, crudType, productId, history} = this.props
         const {productName, year, description} = this.state         
         if(crudType === 'insert') {
             dispatch(insertProduct({productName, year, description}))
         } else if(crudType === 'update') {
             dispatch(updateProduct({productId,productName, year, description}))
         }
+        history.goBack()
     }
     onChangeText = (event) => {
         event.preventDefault()
         this.setState({[event.target.name]: event.target.value})
     }
     componentDidMount() {
-        
-    }
-    componentWillReceiveProps(nextProps) {
-
-        const {products, productId, crudType} = nextProps
-        
+        const {products, productId, crudType} = this.props
         if (crudType === 'update') {
             let foundProduct = products.find(product => product.productId === productId) 
             if(foundProduct) {
                 this.setState(foundProduct)
             } else {
                 this.setState(INITIAL_STATE)
-            }        
-        
-            
+            }                    
         } else {
             this.setState(INITIAL_STATE)
         }
+    }
+    componentWillReceiveProps(nextProps) {        
         //
     }
     render() {        
@@ -89,4 +86,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default withProvider(connect(mapStateToProps)(DetailProduct))
+export default withRouter(withProvider(connect(mapStateToProps)(DetailProduct)))

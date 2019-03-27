@@ -40,6 +40,7 @@ export const deleteProduct = (productId) => {
     }
 }
 export const changeCrudType = (crudType="insert", productId="") => {
+    
     return {
         type: ACTION_CRUD_TYPE,
         crudType, //update, insert,
