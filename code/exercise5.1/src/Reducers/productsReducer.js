@@ -7,7 +7,27 @@ import {
     insertProduct, updateProduct, deleteProduct
 } from '../actions'
 //1 Model => 1 Reducer => N actions => 
-const productsReducer = (state = [], action) => {
+const productsReducer = (state = [
+    {
+        productId: '111',
+    productName: 'iphone 11',
+    year: 2000,
+    description: "This is 111"
+},
+{
+    productId: '112221',
+productName: 'iphone 222',
+year: 2000,
+description: "This is 222"
+},
+{
+    productId: '33',
+productName: 'iphone 13331',
+year: 2000,
+description: "This is 333"
+}
+
+], action) => {
     switch(action.type) {
         case ACTION_INSERT_PRODUCT: {
             let newProduct = Object.assign({}, action.newProduct)

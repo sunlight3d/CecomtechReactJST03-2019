@@ -2,6 +2,11 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withProvider} from '../store'
 import {changeCrudType} from '../actions'
+import 'foundation-sites/dist/css/foundation.min.css'
+import {Callout, Colors, Sizes, Button} from 'react-foundation'
+/**
+ * npm install react-foundation foundation-sites
+ */
 
 class ProductsList extends Component {
     constructor(props) {
@@ -13,22 +18,23 @@ class ProductsList extends Component {
             let content = `${product.productId}-${product.productName} 
                         - ${product.year}-${product.description}`
             return (
-            <li key={product.productId}>
+            <Callout key={product.productId} 
+                color={index%2 === 0? Colors.PRIMARY: Colors.SUCCESS}>
                 <h3>{content}</h3>
-                <button onClick={(event)=> {
+                <Button 
+                    isHollow color={Colors.ALERT}
+                    onClick={(event)=> {
                     this.props.dispatch(changeCrudType("update", product.productId))
-                }}>Update this product</button>
-            </li>)
+                }}>Update this product</Button>
+            </Callout>)
         })
     }
     
     render() {
         const {products} = this.props
-        return (<div>
-            <ul>
+        return (<ul>
             {this.mapProductObjectsToList(products)}
-            </ul>            
-        </div>)
+            </ul>)
     }
 }
 const mapStateToProps = (state) => {
