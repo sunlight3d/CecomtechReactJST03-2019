@@ -2,11 +2,10 @@ import {
     ACTION_DECREASE, 
     ACTION_INCREASE,
 
-    ACTION_BEGIN_FETCH, 
-    ACTION_FETCH_SUCCESS,
-    ACTION_FETCH_FAILED,
+    ACTION_BEGIN_INSERT_PRODUCT,
+    ACTION_INSERT_PRODUCT_SUCCESS,
+    ACTION_INSERT_PRODUCT_FAILED,
 
-    ACTION_CRUD_TYPE,
 } from './actionTypes'
 
 export const increase = (step) => {
@@ -21,40 +20,19 @@ export const decrease = (step) => {
         step
     }
 }  
-
-const beginFetch = ({url,responseData, model, modificationType}) => {
+export const beginInsertProduct = () => {
+    return {type: ACTION_BEGIN_INSERT_PRODUCT}
+}
+export const insertProductSuccess = ({productId, productName, year, description}) => {
     return {
-        type: ACTION_BEGIN_FETCH,
-        url,responseData, model, modificationType
+        type: ACTION_INSERT_PRODUCT_SUCCESS,
+        productId, productName, year, description
     }
 }
-
-const fetchSuccess = ({url,responseData, model, modificationType}) => {
+export const insertProductFailed = (error) => {
     return {
-        type: ACTION_FETCH_SUCCESS,
-        url,
-        responseData,
-        model,//Product, user, ...
-        modificationType,//insert, update, delete
-        
+        type: ACTION_INSERT_PRODUCT_FAILED,
+        error
     }
 }
-const fetchFailed = ({error, url,responseData,model, modificationType}) => {
-    return {
-        type: ACTION_FETCH_FAILED,
-        error,        
-        url,  
-        responseData,      
-        model,//Product, user, ...
-        modificationType,//insert, update, delete
-    }
-}
-
-
-export {
-    beginFetch, 
-    fetchSuccess,
-    fetchFailed,
-}
-
 
