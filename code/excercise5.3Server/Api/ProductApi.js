@@ -4,13 +4,23 @@
  */
 const {pool} = require('../Database')
 
-const getProducts = (request, response) => {    
-    //console.log(`keys = ${JSON.stringify(Object.keys(request))}`)
-    const {limit=100, page=0, productId} = request.query
-    response.json({
-        result: "ok",
-        message: `limit: ${limit}, page=${page}, productId=${productId}`,
-    })
+const getProducts = async (request, response) => {    
+    const {limit, page} = request.query
+    const sql = 'SELECT * FROM Products LIMIT $1 OFFSET $2'
+    try {
+        let result = await pool.query(sql,[limit, page*limit])
+        response.status(200).json({
+            result: 'ok',
+            message: 'Query Product successfully',                
+            products: result.rows
+        })
+    } catch(error) {
+        response.json({
+            result: 'failed',
+            message: `Error = ${error}`
+        })     
+    } 
+
 }
 const insertProduct = async (request, response) => {
     const {productName, year, description} = request.body
