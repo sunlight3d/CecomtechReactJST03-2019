@@ -5,6 +5,7 @@ import 'foundation-sites/dist/css/foundation.min.css'
 import {Callout, Colors, Sizes, Button, ButtonGroup} from 'react-foundation'
 import {withRouter} from 'react-router-dom'
 import Counter from './Counter'
+import {fetchFailed} from '../actions'
 
 /**
  * npm install react-foundation foundation-sites
@@ -28,8 +29,7 @@ class ProductsList extends Component {
                         <Button
                             isHollow color={Colors.PRIMARY}
                             onClick={(event) => {
-                                history.push(`/detailProduct/${product.productId}`)
-                                //dispatch(changeCrudType("update", product.productId))
+                                history.push(`/detailProduct/${product.productId}`)                                
                             }}>Update this product
                         </Button>                        
                     </ButtonGroup>                
@@ -45,8 +45,7 @@ class ProductsList extends Component {
                 <Button
                     isHollow color={Colors.ALERT}
                     onClick={(event) => {
-                        history.push(`/detailProduct/0`)
-                        //dispatch(changeCrudType("insert", "0"))
+                        history.push(`/detailProduct/0`)                        
                     }}>Insert new product
                 </Button>
             </ul>)

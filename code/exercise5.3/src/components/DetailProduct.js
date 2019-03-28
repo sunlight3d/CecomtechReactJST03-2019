@@ -21,11 +21,11 @@ class DetailProduct extends Component {
     
     handleInsertUpdate = async (event) => {
         event.preventDefault()
-        const {dispatch, crudType, productId, history} = this.props
-        const {url} = this.props
-        const {productName, year, description} = this.state         
+        const {dispatch, history} = this.props
+        const {productName, year, description} = this.state        
+        const {productId} = this.props.match.params 
         try {
-            if(url === URL_INSERT_PRODUCT) {
+            if(productId === '0') {
                 let result = await fetch(URL_INSERT_PRODUCT, {
                     method: 'POST',
                     headers: {
@@ -35,12 +35,13 @@ class DetailProduct extends Component {
                       body: JSON.stringify({productName, year, description}),
                     
                 })
-                let responseData = result.json()
-                dispatch(fetchSuccess(responseData))
+                let responseData = result.json()                
+                dispatch(fetchSuccess({url: URL_INSERT_PRODUCT,responseData, model:'Product', modificationType:'insert'}))
                 history.goBack()
             }                     
         } catch(error) {
-            this.setState({error})
+            this.setState({error})            
+            dispatch(fetchFailed({error,url: URL_INSERT_PRODUCT,responseData:[], model:'Product', modificationType:'insert'}))            
         }
         
     }
@@ -65,8 +66,8 @@ class DetailProduct extends Component {
     componentWillReceiveProps(nextProps) {        
         //
     }
-    render() {        
-        const {crudType, productId, products} = this.props        
+    render() {             
+        const {productId} = this.props.match.params
         const {productName, year, description} = this.state
     
         return (<div>
@@ -87,7 +88,7 @@ class DetailProduct extends Component {
                     value={description}
                     placeholder="Enter product's description "/>
                 <Button onClick={this.handleInsertUpdate} color={Colors.PRIMARY}>
-                    {crudType === 'insert' ? "Insert" : "Update"}
+                    {productId === '0' ? "Insert" : "Update"}
                 </Button>
             </form>
         </div>)
@@ -95,11 +96,9 @@ class DetailProduct extends Component {
 }
 
 const mapStateToProps = state => {
+    const {productsReducer} = state    
     return {
-        crudType: state.crudTypeReducer.crudType,
-        productId: state.crudTypeReducer.productId,
-        products: state.productsReducer.responseData.products,      
-        url: state.productsReducer.url  
+        products: state.productsReducer.responseData.products,              
     }
 }
 

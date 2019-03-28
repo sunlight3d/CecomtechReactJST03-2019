@@ -22,15 +22,14 @@ const productsReducer = (state = INITIAL_STATE, action) => {
             }
         }
         case ACTION_FETCH_SUCCESS: {
+            const {url,responseData,model,modificationType} = action        
             return {
-                responseData: action.responseData
+                url,responseData,model,modificationType
             }
         }
         case ACTION_FETCH_FAILED: {
-            return {
-                error: action.error,
-                message: action.message
-            }
+            const {error,url,model,modificationType} = action        
+            return {error,url,model,modificationType}
         }
         default:
             return state

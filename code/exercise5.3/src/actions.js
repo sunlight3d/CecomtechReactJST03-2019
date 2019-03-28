@@ -22,23 +22,31 @@ export const decrease = (step) => {
     }
 }  
 
-const beginFetch = (url) => {
+const beginFetch = ({url,responseData, model, modificationType}) => {
     return {
         type: ACTION_BEGIN_FETCH,
-        url
+        url,responseData, model, modificationType
     }
 }
 
-const fetchSuccess = (responseData) => {
+const fetchSuccess = ({url,responseData, model, modificationType}) => {
     return {
         type: ACTION_FETCH_SUCCESS,
-        responseData
+        url,
+        responseData,
+        model,//Product, user, ...
+        modificationType,//insert, update, delete
+        
     }
 }
-const fetchFailed = (error, message) => {
+const fetchFailed = ({error, url,responseData,model, modificationType}) => {
     return {
         type: ACTION_FETCH_FAILED,
-        error, message
+        error,        
+        url,  
+        responseData,      
+        model,//Product, user, ...
+        modificationType,//insert, update, delete
     }
 }
 
