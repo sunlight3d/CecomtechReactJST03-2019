@@ -5,7 +5,7 @@ import {
     ACTION_BEGIN_INSERT_PRODUCT,
     ACTION_INSERT_PRODUCT_SUCCESS,
     ACTION_INSERT_PRODUCT_FAILED,
-
+    ACTION_DELETE_PRODUCT
 } from './actionTypes'
 
 export const increase = (step) => {
@@ -20,19 +20,9 @@ export const decrease = (step) => {
         step
     }
 }  
-export const beginInsertProduct = () => {
-    return {type: ACTION_BEGIN_INSERT_PRODUCT}
-}
-export const insertProductSuccess = ({productId, productName, year, description}) => {
-    return {
-        type: ACTION_INSERT_PRODUCT_SUCCESS,
-        productId, productName, year, description
+export const insertProduct = ({productName, year, description}) => {
+    return dispatch => {
+        dispatch(beginInsertProduct())
+        
     }
 }
-export const insertProductFailed = (error) => {
-    return {
-        type: ACTION_INSERT_PRODUCT_FAILED,
-        error
-    }
-}
-
