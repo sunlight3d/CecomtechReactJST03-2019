@@ -74,8 +74,9 @@ const productsReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 loading: false,
+                error: null,
                 products: state.products.filter(product => {
-                    return product.productId === action.productId
+                    return product.productId !== action.productId
                 })
             }
         case ACTION_UPDATE_PRODUCT_FAILED:
