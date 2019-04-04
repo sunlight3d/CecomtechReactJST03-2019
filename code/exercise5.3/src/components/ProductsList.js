@@ -6,6 +6,7 @@ import {Callout, Colors, Sizes, Button, ButtonGroup} from 'react-foundation'
 import {withRouter} from 'react-router-dom'
 import Counter from './Counter'
 import {fetchFailed} from '../actions'
+import './ProductsList.css'
 
 /**
  * npm install react-foundation foundation-sites
@@ -20,8 +21,8 @@ class ProductsList extends Component {
         const {history, dispatch} = this.props
         return products.map((product, index) => {
             let content = `${product.productId}-${product.productName} 
-                        - ${product.year}-${product.description}`
-            return (
+                        - ${product.year}-${product.description}`            
+            return (                
             <Callout key={product.productId} 
                 color={index%2 === 0? Colors.PRIMARY: Colors.SUCCESS}>
                 <h3>{content}</h3>
@@ -38,10 +39,12 @@ class ProductsList extends Component {
     }
     
     render() {
-        const {products = [], history, dispatch} = this.props
+        const {history, dispatch} = this.props
+        const {loading,products = [],error} = this.props
         return (<ul>
             <Counter /> 
-            {this.mapProductObjectsToList(products)}
+            {loading ? <div className="loading" /> : 
+                this.mapProductObjectsToList(products)}
                 <Button
                     isHollow color={Colors.ALERT}
                     onClick={(event) => {
@@ -52,8 +55,7 @@ class ProductsList extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    return {
-        products: state.productsReducer.responseData.products
-    }
+    let {products, error, loading} = this.state.productsReducer
+    return {products, error, loading}
 }
 export default withRouter(withProvider(connect(mapStateToProps)(ProductsList))) 

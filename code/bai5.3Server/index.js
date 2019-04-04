@@ -6,6 +6,7 @@
  CREATE TABLE Products(productId SERIAL PRIMARY KEY,productName VARCHAR(200),year INTEGER,description TEXT);
  Display all users: \du
 npm install express pg body-parser
+
  */
 const express = require('express')
 const bodyParser = require('body-parser')

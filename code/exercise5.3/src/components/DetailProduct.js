@@ -8,7 +8,23 @@ import productsReducer from '../Reducers'
 import 'foundation-sites/dist/css/foundation.min.css'
 import {Callout, Colors, Sizes, Button} from 'react-foundation'
 import {withRouter} from 'react-router-dom'
-import {URL_INSERT_PRODUCT} from '../api'
+import {URL_INSERT_PRODUCT} from '../api'   
+
+import {
+    insertProduct,
+    beginInsertProduct,
+    insertProductSuccess,
+    insertProductFailed,
+
+    beginUpdateProduct,
+    updateProductSuccess,
+    updateProductFailed,
+
+    beginDeleteProduct,
+    deleteProductSuccess,
+    deleteProductFailed
+
+} from '../actions'
 
 const INITIAL_STATE =  {
     productName:'', year:'', description:'', url:''
@@ -26,22 +42,15 @@ class DetailProduct extends Component {
         const {productId} = this.props.match.params 
         try {
             if(productId === '0') {
-                let result = await fetch(URL_INSERT_PRODUCT, {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify({productName, year, description}),
-                    
-                })
-                let responseData = result.json()                
-                dispatch(fetchSuccess({url: URL_INSERT_PRODUCT,responseData, model:'Product', modificationType:'insert'}))
+                //insert           
+                dispatch(insertProduct({productName, year, description}))     
                 history.goBack()
-            }                     
+            } else {
+                //update
+                update
+            }
         } catch(error) {
-            this.setState({error})            
-            dispatch(fetchFailed({error,url: URL_INSERT_PRODUCT,responseData:[], model:'Product', modificationType:'insert'}))            
+            this.setState({error})                        
         }
         
     }
