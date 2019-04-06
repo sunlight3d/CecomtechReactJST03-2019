@@ -5,7 +5,7 @@ import 'foundation-sites/dist/css/foundation.min.css'
 import {Callout, Colors, Sizes, Button, ButtonGroup} from 'react-foundation'
 import {withRouter} from 'react-router-dom'
 import Counter from './Counter'
-import {fetchFailed} from '../actions'
+import {fetchFailed, queryProduct} from '../actions'
 import './ProductsList.css'
 
 /**
@@ -18,7 +18,8 @@ class ProductsList extends Component {
         
     }
     mapProductObjectsToList = (products) => {
-        const {history, dispatch} = this.props
+        const {history, dispatch} = this.props      
+        alert(`products22 = ${JSON.stringify(products)}`)  
         return products.map((product, index) => {
             let content = `${product.productId}-${product.productName} 
                         - ${product.year}-${product.description}`            
@@ -37,10 +38,12 @@ class ProductsList extends Component {
             </Callout>)
         })
     }
-    
+    componentDidMount() {
+        this.props.dispatch(queryProduct(100, 0))
+    }
     render() {
         const {history, dispatch} = this.props
-        const {loading,products = [],error} = this.props
+        const {loading,products = [],error} = this.props        
         return (<ul>
             <Counter /> 
             {loading ? <div className="loading" /> : 
@@ -54,8 +57,8 @@ class ProductsList extends Component {
             </ul>)
     }
 }
-const mapStateToProps = (state) => {
-    let {products, error, loading} = this.state.productsReducer
+const mapStateToProps = (state)  => {
+    let {products=[], error, loading} = state.productsReducer    
     return {products, error, loading}
 }
 export default withRouter(withProvider(connect(mapStateToProps)(ProductsList))) 

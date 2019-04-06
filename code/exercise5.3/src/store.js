@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {createStore, applyMiddleware} from 'redux'
 //1 store => 1 root reducer => N reducers => N*M actions
 import rootReducer from './Reducers'

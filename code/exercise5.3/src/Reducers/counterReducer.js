@@ -1,4 +1,3 @@
-import {increase, decrease} from '../actions'
 import {ACTION_INCREASE, ACTION_DECREASE} from '../actionTypes'
 
 //1 model = 1 reducer = 1 "function" = "set state"

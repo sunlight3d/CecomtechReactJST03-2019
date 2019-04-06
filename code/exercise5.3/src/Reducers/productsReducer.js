@@ -1,11 +1,11 @@
 import {
-    ACTION_DECREASE, 
-    ACTION_INCREASE,
-
     ACTION_BEGIN_INSERT_PRODUCT,
     ACTION_INSERT_PRODUCT_SUCCESS,
     ACTION_INSERT_PRODUCT_FAILED,
     
+    ACTION_QUERY_PRODUCT_FAILED,
+    ACTION_QUERY_PRODUCT_SUCCESS,
+
     ACTION_BEGIN_UPDATE_PRODUCT,
     ACTION_UPDATE_PRODUCT_SUCCESS,
     ACTION_UPDATE_PRODUCT_FAILED,
@@ -32,14 +32,28 @@ const productsReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 error: null,
-                loading: false,
-                products: [...state.products, action.newProduct]
+                loading: false,                
             }
         case ACTION_INSERT_PRODUCT_FAILED:
             return {
                 ...state,
                 loading: false,
                 error: action.error
+            }
+        //query
+        case ACTION_QUERY_PRODUCT_SUCCESS:
+            return {
+                ...state,
+                loading:false,
+                error: null,
+                products: action.products
+            }
+        case ACTION_QUERY_PRODUCT_FAILED:
+            return {
+                ...state,
+                loading:false,
+                error: action.error,
+                products: []
             }
         //update
         case ACTION_BEGIN_UPDATE_PRODUCT:
@@ -50,13 +64,7 @@ const productsReducer = (state = INITIAL_STATE, action) => {
         case ACTION_UPDATE_PRODUCT_SUCCESS:
             return {
                 ...state,
-                loading: false,
-                products: state.products.map(product => {
-                    if(product.productId === action.updatedProduct.productId) {
-                        return action.updatedProduct
-                    }
-                    return product
-                })
+                loading: false,                
             }
         case ACTION_UPDATE_PRODUCT_FAILED:
             return {
@@ -73,12 +81,9 @@ const productsReducer = (state = INITIAL_STATE, action) => {
         case ACTION_DELETE_PRODUCT_SUCCESS:
             return {
                 ...state,
-                loading: false,
-                products: state.products.filter(product => {
-                    return product.productId === action.productId
-                })
+                loading: false,                
             }
-        case ACTION_UPDATE_PRODUCT_FAILED:
+        case ACTION_DELETE_PRODUCT_FAILED:
             return {
                 ...state,
                 loading: false,

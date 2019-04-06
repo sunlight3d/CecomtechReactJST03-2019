@@ -10,7 +10,7 @@ import {
   Switch
 } from 'react-router-dom'
 /**
- * npm i redux react-redux react-foundation foundation-sites react-router react-router-dom redux-thunk
+ * npm i redux react-redux react-foundation foundation-sites react-router react-router-dom redux-thunk querystring
  */
 class App extends Component {
   render() {

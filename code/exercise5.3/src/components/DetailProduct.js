@@ -10,17 +10,19 @@ import {Callout, Colors, Sizes, Button} from 'react-foundation'
 import {withRouter} from 'react-router-dom'
 import {URL_INSERT_PRODUCT} from '../api'   
 
-import {
-    insertProduct,
+import {    
     beginInsertProduct,
+    insertProduct,
     insertProductSuccess,
     insertProductFailed,
-
+    
     beginUpdateProduct,
+    updateProduct,
     updateProductSuccess,
     updateProductFailed,
 
     beginDeleteProduct,
+    deleteProduct,
     deleteProductSuccess,
     deleteProductFailed
 
@@ -43,12 +45,13 @@ class DetailProduct extends Component {
         try {
             if(productId === '0') {
                 //insert           
-                dispatch(insertProduct({productName, year, description}))     
-                history.goBack()
+                // alert('productName'+productName)
+                dispatch(insertProduct({productName, year, description}))                     
             } else {
                 //update
-                update
+                dispatch(updateProduct({productId, productName, year, description}))
             }
+            history.goBack()
         } catch(error) {
             this.setState({error})                        
         }
@@ -104,11 +107,4 @@ class DetailProduct extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    const {productsReducer} = state    
-    return {
-        products: state.productsReducer.responseData.products,              
-    }
-}
-
-export default withRouter(withProvider(connect(mapStateToProps)(DetailProduct)))
+export default withRouter(withProvider(connect()(DetailProduct)))

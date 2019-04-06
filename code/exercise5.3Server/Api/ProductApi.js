@@ -6,6 +6,7 @@ const {pool} = require('../Database')
 
 const getProducts = async (request, response) => {    
     const {limit, page} = request.query
+    debugger;
     const sql = 'SELECT * FROM Products LIMIT $1 OFFSET $2'
     try {
         let result = await pool.query(sql,[limit, page*limit])
@@ -22,8 +23,8 @@ const getProducts = async (request, response) => {
     } 
 
 }
-const insertProduct = async (request, response) => {
-    const {productName, year, description} = request.body
+const insertProduct = async (request, response) => {    
+    const {productName, year, description} = JSON.parse(Object.keys(request.body)[0])    
     const sql = 'INSERT INTO Products(productName, year, description) VALUES($1, $2, $3) returning *'
     try {
         let result = await pool.query(sql,[productName, year, description])
@@ -40,7 +41,7 @@ const insertProduct = async (request, response) => {
     } 
 }
 const updateProduct = async (request, response) => {
-    const {productId, productName, year, description} = request.body
+    const {productId, productName, year, description} = JSON.parse(Object.keys(request.body)[0])    
     const sql = 'UPDATE Products SET productName=$1, year=$2, description=$3 WHERE productId=$4'
     try {
         let result = await pool.query(sql,[productName, year, description, productId])

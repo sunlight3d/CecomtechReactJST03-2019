@@ -11,6 +11,9 @@ import {
     ACTION_BEGIN_INSERT_PRODUCT,
     ACTION_INSERT_PRODUCT_SUCCESS,
     ACTION_INSERT_PRODUCT_FAILED,
+
+    ACTION_QUERY_PRODUCT_SUCCESS,
+    ACTION_QUERY_PRODUCT_FAILED,
     
     ACTION_BEGIN_UPDATE_PRODUCT,
     ACTION_UPDATE_PRODUCT_SUCCESS,
@@ -21,6 +24,7 @@ import {
     ACTION_DELETE_PRODUCT_FAILED,    
 
 } from './actionTypes'
+import  querystring from 'querystring'
 
 export const increase = (step) => {
     return {
@@ -36,14 +40,18 @@ export const decrease = (step) => {
 }  
 export const insertProduct = ({productName, year, description}) => {
     return (dispatch, getState) => {
-        dispatch(beginInsertProduct())
-        console.log(`Start inserting product.State = ${getState()}`)
-        axios.post(URL_INSERT_PRODUCT, {productName, year, description}).
-            then(response => {
-                dispatch(insertProductSuccess(response.data))
-            }).catch(error => {
-                dispatch(insertProductFailed(error))
-            })        
+        dispatch(beginInsertProduct())                
+        axios({
+            method: 'post',
+            url: URL_INSERT_PRODUCT,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            timeout: 5000,
+            data: {productName, year, description}
+          }).then(response => {            
+            dispatch(insertProductSuccess(response.data))
+        }).catch(error => {
+            dispatch(insertProductFailed(error))
+        })         
     }
 }
 
@@ -58,6 +66,27 @@ export const insertProductSuccess = (newProduct) => ({
 })
 export const insertProductFailed = (error) => ({
     type: ACTION_INSERT_PRODUCT_FAILED,
+    error
+})
+
+export const queryProduct = (limit, page) => {
+    return (dispatch, getState) => {        
+        console.log(`Start query product. State = ${getState()}`)
+        axios.get(URL_QUERY_PRODUCT+"?"+querystring.stringify({limit, page})).
+            then(response => {                                
+                dispatch(queryProductSuccess(response.data.products))
+            }).catch(error => {
+                dispatch(queryProductFailed(error))
+            })        
+    }
+}
+
+export const queryProductSuccess = (products=[]) => ({
+    type: ACTION_QUERY_PRODUCT_SUCCESS,        
+    products
+})
+export const queryProductFailed = (error) => ({
+    type: ACTION_QUERY_PRODUCT_FAILED,
     error
 })
 

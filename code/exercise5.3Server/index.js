@@ -1,5 +1,5 @@
 /*
-npm install express body-parser
+npm install express body-parser cors 
 npm install -g nodemon
 
 Request which has "query":
@@ -13,12 +13,17 @@ Request POST, PUT, DELETE:
 http://servername:3001/products
 request.body
  */
+
+
 const express = require('express')
 const app = express()
+var cors = require('cors')
+
 const bodyParser = require('body-parser')
 const {getProducts, insertProduct, updateProduct, deleteProduct} = require('./Api/ProductApi')
 
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(cors())
 //http://localhost:3001/
 app.get('/', (request, response) => {
     response.json({info: 'Api Backend with PostgreSQL'})
