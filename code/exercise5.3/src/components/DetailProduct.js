@@ -62,18 +62,19 @@ class DetailProduct extends Component {
         this.setState({[event.target.name]: event.target.value})
     }
     componentDidMount() {
-        const {products, productId, crudType} = this.props
-
-        if (crudType === 'update') {
+        const {products, productId} = this.props
+        if(productId === '0') {
+            //insert           
+            this.setState(INITIAL_STATE)
+        } else {
+            //update
             let foundProduct = products.find(product => product.productId === productId) 
             if(foundProduct) {
                 this.setState(foundProduct)
             } else {
                 this.setState(INITIAL_STATE)
-            }                    
-        } else {
-            this.setState(INITIAL_STATE)
-        }
+            }
+        }        
     }
     componentWillReceiveProps(nextProps) {        
         //

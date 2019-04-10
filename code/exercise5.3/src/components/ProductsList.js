@@ -18,8 +18,7 @@ class ProductsList extends Component {
         
     }
     mapProductObjectsToList = (products) => {
-        const {history, dispatch} = this.props      
-        alert(`products22 = ${JSON.stringify(products)}`)  
+        const {history, dispatch} = this.props          
         return products.map((product, index) => {
             let content = `${product.productId}-${product.productName} 
                         - ${product.year}-${product.description}`            

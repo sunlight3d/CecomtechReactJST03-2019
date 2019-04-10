@@ -73,8 +73,37 @@ export const queryProduct = (limit, page) => {
     return (dispatch, getState) => {        
         console.log(`Start query product. State = ${getState()}`)
         axios.get(URL_QUERY_PRODUCT+"?"+querystring.stringify({limit, page})).
-            then(response => {                                
-                dispatch(queryProductSuccess(response.data.products))
+            then(response => {       
+                let products = response.data.products.map(product => {
+                    let {productid, productname, year, description} = product
+
+                    return {
+                        productId: productid,
+                        productName: productname,
+                        year, description
+                    }
+                })                         
+                dispatch(queryProductSuccess(products))
+            }).catch(error => {
+                dispatch(queryProductFailed(error))
+            })        
+    }
+}
+export const queryProductById = (productId) => {
+    return (dispatch, getState) => {                
+        axios.get(URL_QUERY_PRODUCT+"?"+querystring.stringify({productId})).
+            then(response => {       
+                if(response.result === 'ok') {
+                    const {productid, productname, year, description} = response.data
+                    return {
+                        productId: productid,
+                        productName: productname,
+                        year, description
+                    }
+                } else {
+                    return {}
+                }                                         
+                
             }).catch(error => {
                 dispatch(queryProductFailed(error))
             })        
